@@ -14,7 +14,6 @@ char nome_arquivo[MAX];
 char arquivo_copiado[MAX_TAM_ARQUIVO];
 int numero_linhas;
 
-
 // criando uma struct pra colocar as strings como char e outra pra colocar depois que transformar nos outros tipos de memoria
 struct linha_char{
     char nome1[MAX];
@@ -59,9 +58,7 @@ void obterNumeroLinhas(){
             contador_linhas++;
         }
     }
-
     numero_linhas = contador_linhas;
-
     return;
 }
 void copiarArquivo() {
@@ -76,6 +73,7 @@ void copiarArquivo() {
     long tamanho_arquivo = ftell(arquivo);
     fseek(arquivo, 0, SEEK_SET);
 
+    // copiando o arquivo inteiro pra uma variavel global
     size_t lendo_arquivo = fread(arquivo_copiado, 1, tamanho_arquivo, arquivo);
 
     // fazer a ultima posição do arquivo virar uma string com um terminator nulo
@@ -114,10 +112,6 @@ int salvarCSV(struct linha *Linhas ){
     fgets(nomeArquivo, MAX, stdin);
     nomeArquivo[strcspn(nomeArquivo, "\n")] = '\0';
     arquivo = fopen(nomeArquivo, "w");
-    /*if (arquivo == NULL) {
-        printf("Erro abrindo arquivo!\n");
-        return 1;
-    }*/
 
     for(int i=0; i < numero_linhas; i++){
         fprintf(arquivo,"%s;%.2f;%d;%d;\n",Linhas[i].nome,Linhas[i].preco,Linhas[i].quantidade,Linhas[i].codigo);
@@ -153,8 +147,6 @@ void ordenarPorNome(struct linha *produtos, int size){
         ordenarPorNome_(produtos, size - i);
     }
 }
-
-
 // funçao ordenar produto por ordem crescente
 void ordenarPorPrecoCrescente_(struct linha *produtos, int size){
     int i; // i= marca a posição que vai ser corrigida
@@ -186,7 +178,6 @@ void ordenarPorPrecoCrescente(struct linha *produtos, int size){
         ordenarPorPrecoCrescente_(produtos, size - i);
     }
 }
-
 // funçao ordenar produto por ordem decrescente
 void ordenarPorPrecoDecrescente_(struct linha *produtos, int size){
     int i; // i= marca a posição que vai ser corrigida
@@ -366,9 +357,7 @@ struct linha obterLinhas(int i, char linha_inteira[MAX_TAM_LINHAS]) {
     Linhas[i].quantidade = atoi(Linhas_char[i].quantidade1);
     Linhas[i].codigo = atoi(Linhas_char[i].codigo1);
 
-    
     return Linhas[i];
-
 }
 
 int main(void) {
@@ -386,12 +375,12 @@ int main(void) {
 
     //tem que declarar a struct DEPOIS de rodar a função de obter numero de linhas senao dá ruim
     struct linha Linhas[numero_linhas];
-    //struct linhas Linha[numero_linhas];
 
     if (numero_linhas > MAX_LINHAS){
         printf("Arquivo excede o numero de linhas!\n");
         return -1;
     }
+
     char *token = strtok(arquivo_copiado, "\n");
     for (int j = 0; j<numero_linhas;j++){
         strcpy(linha_inteira[j], token);
@@ -405,13 +394,12 @@ int main(void) {
     } 
     printf("Arquivo atual: %s\n",nome_arquivo);
     exibirArquivo(Linhas);
-// MENU DE SELEÇAO
+    // MENU DE SELEÇAO
     int opcao;
     do {
         exibirMenu();
         scanf("%d", &opcao);
         getchar(); // Limpar o buffer do teclado
-
         switch (opcao) {
             case 1:
                 ordenarPorNome(Linhas, numero_linhas); // funçao feita
