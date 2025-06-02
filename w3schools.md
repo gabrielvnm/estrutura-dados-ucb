@@ -1,0 +1,1 @@
+W3Schools.com. Disponível em: <https://www.w3schools.com/c/ref_stdio_fopen.php>. Acesso em: 27 abr. 2025.
